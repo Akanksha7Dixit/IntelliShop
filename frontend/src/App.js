@@ -1,7 +1,21 @@
 import { useState } from "react";
+import axios from "axios";
 
 function App() {
   const [query, setQuery] = useState("");
+  const [results, setResults] = useState([]);
+
+  const search = async () => {
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/products/recommend",
+        { query }
+      );
+      setResults(res.data);
+    } catch (err) {
+      console.log("Error:", err.message);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
@@ -18,27 +32,22 @@ function App() {
           placeholder="Search products..."
         />
 
-        <button className="bg-blue-500 text-white px-5 py-2 rounded hover:bg-blue-600">
+        <button
+          onClick={search}
+          className="bg-blue-500 text-white px-5 py-2 rounded hover:bg-blue-600"
+        >
           Search
         </button>
       </div>
 
-      {/* Dummy Cards */}
+      {/* Results */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="p-4 bg-white rounded shadow">
-          <h3 className="text-lg font-semibold">iPhone 15</h3>
-          <p>Apple smartphone with great camera</p>
-        </div>
-
-        <div className="p-4 bg-white rounded shadow">
-          <h3 className="text-lg font-semibold">Samsung Galaxy</h3>
-          <p>Android phone with powerful performance</p>
-        </div>
-
-        <div className="p-4 bg-white rounded shadow">
-          <h3 className="text-lg font-semibold">MacBook Air</h3>
-          <p>Lightweight laptop for developers</p>
-        </div>
+        {results.map((r, i) => (
+          <div key={i} className="p-4 bg-white rounded shadow">
+            <h3 className="text-lg font-semibold">{r.product.title}</h3>
+            <p>{r.product.description}</p>
+          </div>
+        ))}
       </div>
     </div>
   );
