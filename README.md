@@ -4,6 +4,12 @@ An AI-based recommendation system that suggests similar products using embedding
 
 ---
 
+## 📌 Status
+
+🚧 Still in development, improvements are ongoing.
+
+---
+
 ## 🚀 Features
 
 - Semantic search using AI
@@ -55,11 +61,6 @@ npm start
 
 ---
 
-## 📌 Status
-
-🚧 Still in development, improvements are ongoing.
-
----
 
 ## 📄 License
 
