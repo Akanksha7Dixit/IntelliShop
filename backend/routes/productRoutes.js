@@ -23,7 +23,8 @@ router.post("/add", async (req, res) => {
                 products.push({
                     name,
                     description,
-                    embedding
+                    embedding,
+                    image
                 });
             }
 
@@ -47,12 +48,23 @@ router.post("/add", async (req, res) => {
             name,
             description,
             embedding,
+            image
         });
 
         await product.save();
 
         res.json(product);
 
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Delete all products
+router.delete("/clear", async (req, res) => {
+    try {
+        await Product.deleteMany({});
+        res.json({ message: "All products deleted" });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

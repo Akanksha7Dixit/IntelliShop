@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import cors from "cors"; 
 
 import productRoutes from "./routes/productRoutes.js";
 import recommendRoutes from "./routes/recommendRoutes.js";
@@ -8,6 +9,8 @@ import recommendRoutes from "./routes/recommendRoutes.js";
 dotenv.config();
 
 const app = express();
+
+app.use(cors()); 
 app.use(express.json());
 
 mongoose.connect(process.env.MONGO_URI)

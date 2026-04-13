@@ -1,19 +1,23 @@
 export function createEmbedding(text) {
-    if (!text) {
-        throw new Error("Text is required");
-    }
+    if (!text) throw new Error("Text is required");
 
-    // Simple embedding (bag-of-words style)
     const words = text.toLowerCase().split(" ");
 
-    const vector = new Array(100).fill(0);
+    // keyword-based vector
+    const keywords = [
+        "laptop", "phone", "smartphone", "camera",
+        "gaming", "performance", "battery", "display",
+        "ultrabook", "lightweight", "music", "headphones"
+    ];
+
+    const vector = new Array(keywords.length).fill(0);
 
     words.forEach(word => {
-        let hash = 0;
-        for (let i = 0; i < word.length; i++) {
-            hash += word.charCodeAt(i);
-        }
-        vector[hash % 100] += 1;
+        keywords.forEach((key, index) => {
+            if (word.includes(key)) {
+                vector[index] += 1;
+            }
+        });
     });
 
     return vector;
