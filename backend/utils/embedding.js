@@ -1,22 +1,20 @@
-// import dotenv from "dotenv";
-// dotenv.config();
+export function createEmbedding(text) {
+    if (!text) {
+        throw new Error("Text is required");
+    }
 
-// import OpenAI from "openai";
+    // Simple embedding (bag-of-words style)
+    const words = text.toLowerCase().split(" ");
 
-// const openai = new OpenAI({
-//   apiKey: process.env.OPENAI_API_KEY,
-// });
+    const vector = new Array(100).fill(0);
 
-// export const createEmbedding = async (text) => {
-//   const response = await openai.embeddings.create({
-//     model: "text-embedding-3-small",
-//     input: text,
-//   });
+    words.forEach(word => {
+        let hash = 0;
+        for (let i = 0; i < word.length; i++) {
+            hash += word.charCodeAt(i);
+        }
+        vector[hash % 100] += 1;
+    });
 
-//   return response.data[0].embedding;
-// };
-
-export const createEmbedding = async (text) => {
-  // simple fake embedding (convert text → numbers)
-  return text.split("").map((char) => char.charCodeAt(0) % 10);
-};
+    return vector;
+}

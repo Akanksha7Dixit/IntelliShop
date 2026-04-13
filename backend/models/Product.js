@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema({
-  title: String,
-  description: String,
-  embedding: [Number]
+    name: String,
+    description: String,
+    embedding: [Number], // vector
 });
 
 export default mongoose.model("Product", productSchema);
