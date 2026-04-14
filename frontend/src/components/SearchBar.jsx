@@ -4,26 +4,29 @@ function SearchBar({ onSearch }) {
   const [query, setQuery] = useState("");
 
   const handleSearch = () => {
-    if (!query) return alert("Enter something");
-    onSearch(query); // ✅ correct
+    if (!query.trim()) return;
+    onSearch(query);
   };
 
   return (
-    <div className="flex justify-center mb-6">
+    <div className="flex justify-center mb-8 shadow-lg rounded-full overflow-hidden w-[60%] mx-auto">
+      
       <input
         type="text"
         placeholder="Search products..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        className="p-3 w-80 rounded-l-lg border outline-none"
+        onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+        className="flex-1 px-6 py-3 outline-none"
       />
 
       <button
-        onClick={handleSearch} // ✅ FIXED
-        className="bg-blue-500 text-white px-5 rounded-r-lg hover:bg-blue-600"
+        onClick={handleSearch}
+        className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-8 font-semibold hover:opacity-90 transition"
       >
         Search
       </button>
+
     </div>
   );
 }
