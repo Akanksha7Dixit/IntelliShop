@@ -1,5 +1,3 @@
-import Navbar from "../components/Navbar";
-
 function About() {
   return (
     <>
@@ -53,7 +51,7 @@ function About() {
               <span className="px-4 py-2 bg-blue-100 rounded-full">React</span>
               <span className="px-4 py-2 bg-purple-100 rounded-full">Node.js</span>
               <span className="px-4 py-2 bg-green-100 rounded-full">MongoDB</span>
-              <span className="px-4 py-2 bg-yellow-100 rounded-full">OpenAI Embeddings</span>
+              <span className="px-4 py-2 bg-yellow-100 rounded-full">Local Transformer Embeddings</span>
               <span className="px-4 py-2 bg-pink-100 rounded-full">Tailwind CSS</span>
             </div>
           </div>
