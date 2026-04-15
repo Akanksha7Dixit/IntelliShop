@@ -1,24 +1,25 @@
-export function createEmbedding(text) {
+import OpenAI from "openai";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+});
+
+export async function createEmbedding(text) {
     if (!text) throw new Error("Text is required");
 
-    const words = text.toLowerCase().split(" ");
-
-    // keyword-based vector
-    const keywords = [
-        "laptop", "phone", "smartphone", "camera",
-        "gaming", "performance", "battery", "display",
-        "ultrabook", "lightweight", "music", "headphones"
-    ];
-
-    const vector = new Array(keywords.length).fill(0);
-
-    words.forEach(word => {
-        keywords.forEach((key, index) => {
-            if (word.includes(key)) {
-                vector[index] += 1;
-            }
+    try {
+        const response = await openai.embeddings.create({
+            model: "text-embedding-3-small",
+            input: text,
+            encoding_format: "float",
         });
-    });
-
-    return vector;
+        
+        return response.data[0].embedding;
+    } catch (error) {
+        console.error("Error creating embedding:", error.message);
+        throw new Error("Failed to create embedding. Check your OpenAI API Key.");
+    }
 }

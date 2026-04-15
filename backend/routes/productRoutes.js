@@ -22,10 +22,10 @@ router.post("/seed", async (req, res) => {
   try {
     await Product.deleteMany(); // clear old data
 
-    const products = productsData.map(item => ({
+    const products = await Promise.all(productsData.map(async (item) => ({
       ...item,
-      embedding: createEmbedding(`${item.name} ${item.description}`)
-    }));
+      embedding: await createEmbedding(`${item.name} ${item.description}`)
+    })));
 
     await Product.insertMany(products);
 
@@ -46,12 +46,12 @@ router.post("/add", async (req, res) => {
 
     // 🔹 Multiple products
     if (Array.isArray(data)) {
-      const products = data
+      const products = await Promise.all(data
         .filter(item => item.name && item.description)
-        .map(item => ({
+        .map(async (item) => ({
           ...item,
-          embedding: createEmbedding(`${item.name} ${item.description}`)
-        }));
+          embedding: await createEmbedding(`${item.name} ${item.description}`)
+        })));
 
       await Product.insertMany(products);
 
@@ -73,7 +73,10 @@ router.post("/add", async (req, res) => {
     const product = new Product({
       name,
       description,
-      embedding: createEmbedding(`${name} ${description}`),
+      price: data.price,
+      category: data.category,
+      stock: data.stock || 10,
+      embedding: await createEmbedding(`${name} ${description}`),
       image
     });
 
