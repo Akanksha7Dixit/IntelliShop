@@ -81,7 +81,7 @@ const Checkout = () => {
                                         <img src={item.image} alt={item.name} className="w-12 h-12 object-cover rounded" />
                                         <span className="dark:text-white">{item.name}</span>
                                     </div>
-                                    <span className="dark:text-gray-300">{item.qty} x ${item.price.toFixed(2)} = ${(item.qty * item.price).toFixed(2)}</span>
+                                    <span className="dark:text-gray-300">{item.qty} x Rs. {Number(item.price).toLocaleString("en-IN")} = Rs. {(item.qty * item.price).toLocaleString("en-IN")}</span>
                                 </li>
                             ))}
                         </ul>
@@ -90,7 +90,7 @@ const Checkout = () => {
                     <div className="border-t dark:border-gray-700 pt-6">
                         <div className="flex justify-between items-center mb-6">
                             <span className="text-xl font-bold dark:text-white">Total:</span>
-                            <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">${cartTotal.toFixed(2)}</span>
+                            <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">Rs. {Number(cartTotal).toLocaleString("en-IN")}</span>
                         </div>
                         <button 
                             onClick={placeOrderHandler}

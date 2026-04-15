@@ -13,6 +13,7 @@ function ProductDetails() {
   const [product, setProduct] = useState(location.state || null);
   const [loading, setLoading] = useState(!location.state);
   const [qty, setQty] = useState(1);
+  const [selectedImage, setSelectedImage] = useState(location.state?.image || "");
 
   useEffect(() => {
     if (!product) {
@@ -21,6 +22,7 @@ function ProductDetails() {
           setLoading(true);
           const res = await axios.get(`/api/products/${id}`);
           setProduct(res.data);
+          setSelectedImage(res.data.image);
         } catch (err) {
           console.error("Error fetching product:", err);
         } finally {
@@ -28,8 +30,10 @@ function ProductDetails() {
         }
       };
       fetchProduct();
+    } else if (!selectedImage && product.image) {
+      setSelectedImage(product.image);
     }
-  }, [id, product]);
+  }, [id, product, selectedImage]);
 
   const addToCartHandler = () => {
     addToCart(product, qty);
@@ -62,24 +66,45 @@ function ProductDetails() {
         className="max-w-6xl w-full mx-auto bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-3xl shadow-2xl p-6 lg:p-10 grid md:grid-cols-2 gap-10 border border-gray-100 dark:border-gray-700"
       >
         {/* IMAGE SECTION */}
-        <div className="relative group">
-          <motion.img
-            layoutId={`image-${product._id}`}
-            src={product.image}
-            alt={product.name}
-            className="w-full h-full min-h-[400px] object-cover rounded-2xl shadow-lg border border-gray-200 dark:border-gray-600 group-hover:shadow-2xl transition"
-          />
-          {product.category && (
-            <span className="absolute top-4 left-4 bg-white/90 dark:bg-gray-900/90 text-blue-600 font-bold px-4 py-1 rounded-full shadow-md backdrop-blur">
-              {product.category}
-            </span>
+        <div className="flex flex-col gap-4">
+          <div className="relative group overflow-hidden rounded-2xl shadow-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-900">
+            <motion.img
+              key={selectedImage}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              src={selectedImage}
+              alt={product.name}
+              className="w-full h-full min-h-[400px] max-h-[500px] object-cover transition duration-500"
+            />
+            {product.category && (
+              <span className="absolute top-4 left-4 bg-white/90 dark:bg-gray-900/90 text-blue-600 font-bold px-4 py-1 rounded-full shadow-md backdrop-blur">
+                {product.category}
+              </span>
+            )}
+          </div>
+
+          {/* Thumbnail Gallery */}
+          {product.images && product.images.length > 0 && (
+            <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+              {product.images.map((img, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setSelectedImage(img)}
+                  className={`relative min-w-[80px] h-20 rounded-xl overflow-hidden border-2 transition-all duration-200 ${
+                    selectedImage === img ? "border-blue-600 scale-105 shadow-md" : "border-transparent opacity-70 hover:opacity-100"
+                  }`}
+                >
+                  <img src={img} alt={`${product.name} ${idx}`} className="w-full h-full object-cover" />
+                </button>
+              ))}
+            </div>
           )}
         </div>
 
         {/* DETAILS SECTION */}
         <div className="flex flex-col justify-center py-4">
           <div>
-            <h1 className="text-4xl lg:text-5xl font-extrabold text-gray-800 dark:text-white mb-6 leading-tight">
+            <h1 className="text-4xl lg:text-5xl font-extrabold text-gray-800 dark:text-white mb-6 leading-tight font-display">
               {product.name}
             </h1>
             <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed mb-8">
@@ -91,8 +116,8 @@ function ProductDetails() {
             </div>
             
             <div className="flex items-end gap-6 mb-8">
-              <h2 className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-                ${product.price?.toFixed(2) || "99.00"}
+              <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+                Rs. {product.price?.toLocaleString("en-IN") || "9,900"}
               </h2>
               {product.stock > 0 ? (
                  <span className="bg-green-100 text-green-700 font-bold px-4 py-1.5 rounded-lg text-sm mb-2 shadow-sm">In Stock ({product.stock})</span>

@@ -32,7 +32,7 @@ const Cart = () => {
                                     <img src={item.image} alt={item.name} className="w-20 h-20 object-cover rounded-md" />
                                     <div>
                                         <Link to={`/product/${item.product}`} className="font-semibold text-lg hover:text-blue-500 dark:text-white">{item.name}</Link>
-                                        <p className="text-gray-500">${item.price.toFixed(2)}</p>
+                                        <p className="text-gray-500">Rs. {Number(item.price).toLocaleString("en-IN")}</p>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-4">
@@ -60,7 +60,7 @@ const Cart = () => {
                         <h2 className="text-xl font-bold mb-4 dark:text-white">Order Summary</h2>
                         <div className="flex justify-between mb-4 text-gray-600 dark:text-gray-300">
                             <span>Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)} items):</span>
-                            <span className="font-bold">${cartItems.reduce((acc, item) => acc + item.qty * item.price, 0).toFixed(2)}</span>
+                            <span className="font-bold">Rs. {cartItems.reduce((acc, item) => acc + item.qty * item.price, 0).toLocaleString("en-IN")}</span>
                         </div>
                         <button 
                             disabled={cartItems.length === 0} 

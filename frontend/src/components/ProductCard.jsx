@@ -39,7 +39,7 @@ function ProductCard({ product }) {
 
         <div className="flex items-center justify-between mt-auto pt-4 border-t dark:border-gray-700">
           <span className="text-xl font-extrabold text-blue-600 dark:text-blue-400">
-            ${product?.price?.toFixed(2) || "99.00"}
+            Rs. {product?.price?.toLocaleString("en-IN") || "9,900"}
           </span>
           <button
             onClick={() => navigate(`/product/${product._id}`, { state: product })}

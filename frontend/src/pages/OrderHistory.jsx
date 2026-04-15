@@ -52,7 +52,7 @@ const OrderHistory = () => {
                                 </div>
                                 <div>
                                     <p className="text-xs text-gray-500 uppercase tracking-wide">Total</p>
-                                    <p className="font-semibold dark:text-gray-200">${order.totalPrice.toFixed(2)}</p>
+                                    <p className="font-semibold dark:text-gray-200">Rs. {Number(order.totalPrice).toLocaleString("en-IN")}</p>
                                 </div>
                                 <div>
                                     <p className="text-xs text-gray-500 uppercase tracking-wide">Order ID</p>
