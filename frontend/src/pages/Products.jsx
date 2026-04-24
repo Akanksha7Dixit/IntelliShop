@@ -6,15 +6,14 @@ function Products() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
 
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-
         const res = await axios.get(
           "http://localhost:5000/api/products"
         );
-
         setProducts(res.data);
       } catch (err) {
         console.error(err);
@@ -22,7 +21,6 @@ function Products() {
         setLoading(false);
       }
     };
-
     fetchProducts();
   }, []);
 
